@@ -26,11 +26,9 @@ public:
         	ret = max(ret, maxProductWithoutZero(A+k+1, zero[i]-k-1));
         }
         ret = max(ret, maxProductWithoutZero(A+k+1, n-k-1));
-        cout << k+1 << " -- " << (-k-1) << endl;
         return ret;
-        	
     }
-    
+
 private:
 	int maxProductWithoutZero(int A[], int n) {
     	if (n <= 0)
