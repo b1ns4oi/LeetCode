@@ -39,6 +39,11 @@ public:
 		vector<string> vec;
 		parti_helper(ret, a, s, vec, 0);
 		
+		// destruct a[][]
+		for(i = 0; i < N; ++i)
+			delete[] a[i];
+		delete[] a;
+		
 		return ret;
     }
 	
