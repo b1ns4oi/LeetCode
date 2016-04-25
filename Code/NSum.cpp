@@ -100,15 +100,50 @@ public:
         }
         return ret;
     }
+
+    // #18
+    vector<vector<int> > fourSum(vector<int>& nums, int target) {
+        vector<vector<int> > ret;
+        int i, j, k, l;
+        int n = nums.size();
+
+        sort(nums.begin(), nums.end());
+        for (i = 0; i < n-3; ++i) {
+            int T1 = target - nums[i];
+            // find 3 sum with target equals to T1
+            for (j = i+1; j < n-2; ++j) {
+                int T2 = T1 - nums[j];
+                for (k = j+1, l = n-1; k < l; ) {
+                    if (nums[k] + nums[l] == T2) {
+                        vector<int> quadruplet = {nums[i], nums[j], nums[k], nums[l]};
+                        ret.push_back(quadruplet);
+                        while (k < l && nums[k] == quadruplet[2]) ++k;
+                        while (k < l && nums[l] == quadruplet[3]) --l;
+                    }   
+                    else {
+                        (nums[k] + nums[l] > T2) ? --l : ++k;
+                    }
+                }
+                while (j+1 < n-2 && nums[j+1] == nums[j])
+                    ++j;
+            }
+            while (i+1 < n-3 && nums[i+1] == nums[i])
+                ++i;
+        }
+        return ret;
+    }
 };
 
 int main() {
 	Solution sol;
-	vector<int> nums = {3,2,4};
-	vector<int> result = sol.twoSum(nums, 6);
+	vector<int> nums = {1,0,-1,0,-2,2};
+	vector<vector<int> > result = sol.fourSum(nums, 0);
 	cout << "-------------------- \n" << endl;
     for (vector<int>::iterator it = result.begin(); it != result.end(); ++it) {
-        cout << *it << " ";
+        for (int i = 0; i < it->size(); ++i) {
+            cout << (*it)[i] << " ";
+        }
+        cout << endl;
     }
     cout << endl;
 }
