@@ -7,6 +7,7 @@ using namespace std;
 
 class Solution {
 public:
+    // #16
     int threeSumClosest(vector<int>& nums, int target) {
         int i, j, k;
         int n = nums.size();
@@ -34,6 +35,34 @@ public:
         	}
         }
         return sum;
+    }
+
+    // #15
+    vector<vector<int> > threeSum(vector<int>& nums) {
+        int i, j, k;
+        int n = nums.size();
+        int sum;
+        vector<vector<int> > ret;
+
+        if (n < 3)
+            return ret;
+        std::sort(nums.begin(), nums.end());
+
+        for (i = 0; i < n-2; ++i) {
+            for (j = i+1, k = n-1; j < k;) {
+                if (nums[i] + nums[j] + nums[k] == 0) {
+                    vector<int> triplet = {nums[i], nums[j], nums[k]};
+                    ret.push_back(triplet);
+                    while (j < k && nums[j] == triplet[1]) ++j;
+                    while (j < k && nums[k] == triplet[2]) --k;
+                }
+                else
+                    (nums[i] + nums[j] + nums[k] > 0) ? --k : ++j;
+            }
+            while (i+1 < n-2 && nums[i+1] == nums[i])
+                ++i;
+        }
+        return ret;
     }
 };
 
