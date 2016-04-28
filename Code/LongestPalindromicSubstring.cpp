@@ -17,7 +17,7 @@ public:
     // Expand Around Center
     // Time:  O(n^2)
     // Space: O(1)
-    string longestPalindrome(string s) {
+    string longestPalindrome_eac(string s) {
         int s_len = s.size();
         if (s_len < 2)
             return s;
@@ -39,6 +39,24 @@ public:
         }
         string sub = s.substr(start, len);
         return sub;
+    }
+
+    // another Expand Around Center way
+    // reference : https://leetcode.com/articles/longest-palindromic-substring/#approach-4-expand-around-center-accepted
+    string longestPalindrome_eac2(string s) {
+        int i, max_len = 0, start, len = s.size();
+
+        for (i = 0; i < len; ++i) {
+            int len1 = expand(s, i, i);
+            int len2 = expand(s, i, i+1);
+            int len_temp = max(len1, len2);
+
+            if (max_len < len_temp) {
+                max_len = len_temp;
+                start = i - (len_temp-1)/2;
+            }
+        }
+        return s.substr(start, max_len);
     }
 
     // DP solution
@@ -74,13 +92,20 @@ public:
         }
         return s.substr(start, palin_len);
     }
+
+private:
+    int expand(string &s, int lo, int hi) {
+        for (; lo >= 0 && hi < s.size() && s[lo] == s[hi]; --lo, ++hi)
+            ;
+        return hi-lo-1;
+    }
 };
 
 int main(int argc, char *argv[])
 {
     Solution sol;
     string s = argv[1];
-    string result = sol.longestPalindrome(s);
+    string result = sol.longestPalindrome_eac2(s);
     cout << result << endl;
 }
 
