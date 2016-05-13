@@ -84,6 +84,37 @@ public:
         return -1;
     }
 
+    // This solution is based on idea of the solution for "81. Search in Rotated Sorted Array II"
+    // Reference: https://leetcode.com/discuss/223/when-there-are-duplicates-the-worst-case-is-could-we-do-better
+    // answered by user "1337c0d3r"
+    //
+    // This one is easier to understand than "search3()".
+    int search4(vector<int>& nums, int target) {
+        int i, j;
+
+        for (i = 0, j = nums.size()-1; i <= j; ) {
+            int mid = (i+j)/2;
+            if (nums[mid] == target)
+                return mid;
+
+            if (nums[mid] > nums[i]) {
+                if (nums[i] <= target && target < nums[mid])
+                    j = mid-1;
+                else
+                    i = mid+1;
+            }
+            else if (nums[mid] < nums[i]) {
+                if (nums[mid] < target && target <= nums[j])
+                    i = mid+1;
+                else
+                    j = mid-1;
+            }
+            else
+                ++i;
+        }
+        return -1;
+    }
+
 private:
     int binary_search(vector<int>& sorted_nums, int target, int left, int right) {
         int i = left, j = right;
