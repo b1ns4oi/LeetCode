@@ -42,7 +42,7 @@ public:
     vector<vector<int>> combine1(int n, int k) {
         vector<vector<int> > vv;
         vector<int> v;
-        combine(vv, v, n, k);
+        combine1(vv, v, n, k);
         return vv;
     }
 
@@ -54,7 +54,7 @@ private:
         }
         for (int i = n; i >= k; --i) {
             v.push_back(i);
-            combine(vv, v, i-1, k-1);
+            combine1(vv, v, i-1, k-1);
             v.pop_back();
         }
 
