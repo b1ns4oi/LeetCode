@@ -1,5 +1,7 @@
 /*  A question asked when interviewed in Tencent.
 **
+**  Same as the question "46. Permutations" found in Leetcode's problems set
+**
 **  Write a program to print all permutations of the elements in array.
 **
 **  e.g.
