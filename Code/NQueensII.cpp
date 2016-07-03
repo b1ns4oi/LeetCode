@@ -6,7 +6,7 @@ using namespace std;
 class Solution {
 public:
     int totalNQueens(int n) {
-        /* integer is faster than bool: http://stackoverflow.com/questions/5764956/which-is-faster-if-bool-or-ifint */
+        /* integer is faster than bool: http://stackoverflow.com/questions/32821113/why-vectorint-is-faster-than-vectorbool-in-the-following-case */
         vector<int> col(n, 0);
         vector<int> diag45(2*n-1, 0);
         vector<int> diag135(2*n-1, 0);
