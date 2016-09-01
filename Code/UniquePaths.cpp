@@ -28,20 +28,11 @@ public:
             vec[1][j] = 1;
 
         // bottom-up traversal
-        for (i = 2; i <= m; ++i) {
-            for (j = 2; j <= n; ++j) {
+        for (i = 2; i <= m; ++i)
+            for (j = 2; j <= n; ++j)
                 vec[i][j] = vec[i-1][j] + vec[i][j-1];
-            }
-        }
 
         return vec[m][n];
-    }
-
-private:
-    int uniquePaths_recur(int m, int n) {
-        if (m == 1 || n == 1)
-            return 1;
-        return uniquePaths_recur(m-1, n) + uniquePaths_recur(m, n-1);
     }
 };
 
