@@ -30,6 +30,22 @@ public:
         }
         return vec[0][0];
     }
+
+    // DP solution without space
+    int minPathSum3(vector<vector<int>>& grid) {
+        int m = grid.size(), n = grid[0].size();
+        int i, j;
+
+        for (i = m-2; i >= 0; --i)
+            grid[i][n-1] += grid[i+1][n-1];
+
+        for (j = n-2; j >= 0; --j) {
+            grid[m-1][j] += grid[m-1][j+1];
+            for (i = m-2; i >= 0; --i)
+                grid[i][j] += min(grid[i+1][j], grid[i][j+1]);
+        }
+        return grid[0][0];
+    }
 private:
     int minPathSum_recur(vector<vector<int>>& grid, int r, int c) {
         int m = grid.size(), n = grid[0].size();
@@ -48,7 +64,7 @@ private:
 
 int main() 
 {
-    vector<vector<int> > obstacleGrid = {
+    vector<vector<int> > grid = {
         {7,1,3,5,8,9,9,2,1,9,0,8,3,1,6,6,9,5},
         {9,5,9,4,0,4,8,8,9,5,7,3,6,6,6,9,1,6},
         {8,2,9,1,3,1,9,7,2,5,3,1,2,4,8,2,8,8},
@@ -64,8 +80,10 @@ int main()
     };
 
     Solution sol;
-    int ret1 = sol.minPathSum(obstacleGrid);
-    int ret2 = sol.minPathSum2(obstacleGrid);
+    int ret1 = sol.minPathSum(grid);
+    int ret2 = sol.minPathSum2(grid);
+    int ret3 = sol.minPathSum3(grid);
     cout << ret1 << endl;
     cout << ret2 << endl;
+    cout << ret3 << endl;
 }
