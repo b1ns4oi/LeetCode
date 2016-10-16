@@ -62,6 +62,27 @@ public:
         }
         return longest;
     }
+
+    // another DP solution
+    // I came up with this one on 2016-10-16
+    int longestValidParentheses_DP2(string s) {
+        int i, n = s.size(), maxlen = 0;
+        vector<int> stk;    // store indices of '(' which are waiting to be matched
+        vector<int> vec(n, 0);
+
+        for (i = 0; i < n; ++i) {
+            if (s[i] == '(') {
+                stk.push_back(i);
+            }
+            else if (!stk.empty()) {
+                int left_par_idx = stk[stk.size()-1];
+                vec[i] = i - left_par_idx + 1 + vec[left_par_idx-1];
+                stk.pop_back();
+                maxlen = std::max(maxlen, vec[i]);
+            }
+        }
+        return maxlen;
+    }
 };
 
 int main(int argc, char *argv[])

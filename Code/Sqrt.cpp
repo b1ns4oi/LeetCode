@@ -23,6 +23,12 @@ public:
     }
 
     // Reference: https://discuss.leetcode.com/topic/8680/a-binary-search-solution/17
+    //
+    // The code logic about adjusting the 'left' and 'right' pointers inside while loop is to make 
+    // sure that if loop terminated, no matter whether we find the result exactly 
+    // (if x is 4, for example, then result should be exactly 2), or just an approximate 
+    // value (sqrt(3) == 1), final result should be just one "step" less than the 'left' pointer. 
+    // Also notice that when loop terminated, 'left' must be equals to 'right'.
     int mySqrt2(int x) {
         if(x <= 1) return x;
         int left = 1, right = x;
