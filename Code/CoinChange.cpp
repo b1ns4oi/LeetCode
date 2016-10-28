@@ -1,5 +1,12 @@
 // https://leetcode.com/problems/coin-change/
 // Memory Limit Exceeded Error
+//
+// 递推关系：
+// 对于每个amount(从1到amount)，如果已经知道某个coins 集合情况下的最优解，现在对集合增加一个coin 面值，求最优解
+// 增加的面值带来的影响会是以下情况之一：
+// 1， 面值大于amount，则解还应是增加前的最优解（增加了一个元素对结果无影响）
+// 2， 面值不大于amount, 则可以尝试采纳该面值，最终解是不采纳该面值的子情况与采纳该面值的子情况的min (注意子情况为-1 )
+//
 int coinChange(vector<int>& coins, int amount) {
 	int n = coins.size();
 	int i, j, k;
@@ -24,6 +31,13 @@ int coinChange(vector<int>& coins, int amount) {
 
 
 // Reference: https://discuss.leetcode.com/topic/32475/c-o-n-amount-time-o-amount-space-dp-solution
+//
+// 这个解法的递推关系比较巧妙：
+// 假设已经知道aux[0], aux[1], ... , aux[amount-1] 的最优解， 要求aux[amount]，就是遍历coins 集合中所有可能
+// 被aux[amount] 取到的coin (也就是面值不大于amount 的coin)，再考虑对应子情况aux[amount-coin] 的值
+//
+// 最终我们要的结果是遍历过程中发现的最小值
+//
 int coinChange2(vector<int>& coins, int amount) {
 	int n = coins.size();
 	int i, j;
