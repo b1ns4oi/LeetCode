@@ -30,6 +30,57 @@ int coinChange(vector<int>& coins, int amount) {
 }
 
 
+// Recursive solution (i.e. Top down DP without caching result)
+//  Time Limit Exceeded
+int coinChange_recur(vector<int>& coins, int amount) {
+	if (amount == 0)
+		return 0;
+
+	int i, j, res = amount+1;
+
+	for (i = 0; i < coins.size(); ++i) {
+		if (coins[i] <= amount) {
+			j = coinChange_recur(coins, amount-coins[i]);
+			if (j == -1)
+				continue;
+			if (j+1 < res)
+				res = j+1;
+		}
+	}
+	return res > amount ? -1 : res;
+}
+
+int coinChange_recur_with_cache_helper(vector<int>& coins, int amount, vector<int>& cache) {
+	if (cache[amount] < amount+1)
+		return cache[amount];
+	if (amount == 0)
+		return 0;
+
+	int i, j, res = amount+1;
+
+	for (i = 0; i < coins.size(); ++i) {
+		if (coins[i] <= amount) {
+			j = coinChange_recur_with_cache_helper(coins, amount-coins[i], cache);
+			if (j == -1)
+				continue;
+			if (j+1 < res)
+				res = j+1;
+		}
+	}
+	cache[amount] = res > amount ? -1 : res;
+	return cache[amount];
+}
+
+// Recursive solution with cache
+// Accepted
+int coinChange_recur_with_cache(vector<int>& coins, int amount) {
+	vector<int> cache(amount+1, amount+1);
+	return coinChange_recur_with_cache_helper(coins, amount, cache);
+}
+
+
+// Botton-up DP solution
+//
 // Reference: https://discuss.leetcode.com/topic/32475/c-o-n-amount-time-o-amount-space-dp-solution
 //
 // 这个解法的递推关系比较巧妙：
@@ -38,7 +89,7 @@ int coinChange(vector<int>& coins, int amount) {
 //
 // 最终我们要的结果是遍历过程中发现的最小值
 //
-int coinChange2(vector<int>& coins, int amount) {
+int coinChange_DP(vector<int>& coins, int amount) {
 	int n = coins.size();
 	int i, j;
 
