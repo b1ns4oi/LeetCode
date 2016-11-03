@@ -1,76 +1,49 @@
-
-#include <iostream>
-#include <vector>
-#include <algorithm>
-
-using std::vector;
-using std::max;
-using std::cout;
-using std::endl;
-
 class Solution {
 public:
-    int maxProduct(int A[], int n) {
-    	if (n <= 0)
-    		return 0;
-    	if (n == 1 && A[0] <= 0)
-    		return A[0];
+    // 
+    // 这一题在找DP 递归公式时需要注意：要寻找每个下标处的最优解f(n)，仅仅知道f(n-1) 是不够的，还需要知道n-1 处的minimum product 值
+    // 因此在迭代过程中，需要save 两个值：1, maximum product 2, minumum product
+    // 基于这两个值，才能推导出下一个元素处的最优解
+    //
+    int maxProduct(vector<int>& nums) {
+        int i;
+        int max_pre = nums[0], min_pre = nums[0], res = nums[0];
+        int max, min;
+        
+        for (i = 1; i < nums.size(); ++i) {
+            if (nums[i] < 0) {
+                max = min_pre <= 0 ? nums[i] * min_pre : nums[i];
+                min = max_pre > 0 ? nums[i] * max_pre : nums[i];
+                
+            }
+            else if (nums[i] > 0) {
+                max = max_pre > 0 ? max_pre * nums[i] : nums[i];
+                min = min_pre <= 0 ? min_pre * nums[i] : nums[i];
+            }
+            else
+                max = min = 0;
 
-    	vector<int> zero;
-    	for (int i = 0; i != n; ++i)
-        	if (A[i] == 0)
-        		zero.push_back(i);
-
-        int ret = 0, k = -1;
-        for(int i = 0; i != zero.size(); k = zero[i++]) {
-        	ret = max(ret, maxProductWithoutZero(A+k+1, zero[i]-k-1));
+            res = std::max(res, max);
+            max_pre = max;
+            min_pre = min;
         }
-        ret = max(ret, maxProductWithoutZero(A+k+1, n-k-1));
-        return ret;
+        return res;
     }
 
-private:
-	int maxProductWithoutZero(int A[], int n) {
-    	if (n <= 0)
-    		return 0;
-    	if (n == 1 && A[0] <= 0)
-    		return A[0];
+    // 不难发现，max/min 值分别只可能有三种选择，所以上述代码可以稍微优化一下
+    int maxProduct2(vector<int>& nums) {
+        int i;
+        int max_pre = nums[0], min_pre = nums[0], res = nums[0];
+        int max, min;
+        
+        for (i = 1; i < nums.size(); ++i) {
+            max = std::max(std::max(nums[i] * min_pre, nums[i]), max_pre * nums[i]);
+            min = std::min(std::min(nums[i] * min_pre, nums[i]), max_pre * nums[i]);
 
-        vector<int> aux;
-      	for (int i = 0; i != n; ++i)
-        	if (A[i] < 0)
-        		aux.push_back(i);
-
-        // no negative elements or the number of negatives is even
-        if (aux.size() == 0 || (aux.size() & 1) == 0) {
-        	return productInRange(A, A+n);
-        } 
-       	else if (aux.size() == 1)
-       		return max(productInRange(A, A+aux[0]), productInRange(A+aux[0]+1, A+n));
-       	else 
-       		return max(productInRange(A, A+aux[aux.size() - 1]), productInRange(A+aux[0]+1, A+n));
-       
+            res = std::max(res, max);
+            max_pre = max;
+            min_pre = min;
+        }
+        return res;
     }
-
-	int productInRange(int *p1, int *p2) {
-		if (p1 == p2)
-			return 0;
-		int product = 1;
-		for (; p1 != p2; ++p1)
-			product *= *p1;
-		return product;
-	}
 };
-
-int main()
-{
-	int arr[7] = {1,0,-1,2,3,-5,-2};
-	Solution sol;
-	cout << sol.maxProduct(arr, 7) << endl;
-}
-
-
-
-
-
-
