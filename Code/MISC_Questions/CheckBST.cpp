@@ -1,3 +1,11 @@
+// Given a binary tree, determine if it's a binary search tree
+//
+// 一般来说，BST 的定义是：left <= current < right
+// 按照这个定义只有checkBST2() 和checkBST3() 可以处理 current == right 这种边界的情况
+// 如果定义成: left < current < right （或者说tree 中节点值没有duplicate），那 checkBST1() 跟 checkBST4() 也可以
+//
+// 总结：如果没有边界条件限制，用checkBST4(); 否则checkBST3()
+//
 #include <iostream>
 #include <string>
 #include <map>
@@ -73,6 +81,23 @@ bool checkBST3(Node* root) {
 	return checkBST3_recur(root, min, max);
 }
 
+
+// Just like 'checkBST1()', but without auxiliary array
+int prev_data = INT_MIN;
+bool checkBST4(Node *root) {
+	if (root == NULL) return true;
+
+	if (!checkBST4(root->left)) return false;
+
+	if (root->data < prev_data) return false;
+	prev_data = root->data;
+
+	if (!checkBST4(root->right)) return false;
+
+	return true;
+}
+
+
 int main() {
 	Node n1(2);
 	Node n2(1);
@@ -80,4 +105,5 @@ int main() {
 	n1.left = &n2;
 	n1.right = &n3;
 	cout << checkBST3(&n1) << endl;
+	cout << checkBST4(&n1) << endl;
 }
